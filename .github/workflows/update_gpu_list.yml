@@ -1,10 +1,11 @@
 name: Update GPU List
+
 permissions:
   contents: write
 
 on:
   schedule:
-    - cron: "0 18 * * *"   # 毎日 JST 03:00
+    - cron: "0 18 * * *"   # JST 03:00
   workflow_dispatch:
 
 jobs:
@@ -14,6 +15,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Run GPU list generator
         run: |
@@ -29,4 +33,4 @@ jobs:
 
       - name: Push changes
         run: |
-          git push
+          git push origin HEAD:main
