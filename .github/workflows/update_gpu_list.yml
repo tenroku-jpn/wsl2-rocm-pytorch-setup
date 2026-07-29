@@ -17,7 +17,6 @@ jobs:
 
       - name: Run GPU list generator
         run: |
-          cd repo
           chmod +x generate_gpu_env.sh
           ./generate_gpu_env.sh
 
