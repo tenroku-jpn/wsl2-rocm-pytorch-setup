@@ -1,0 +1,73 @@
+@echo off
+setlocal
+
+set DISTRO=Ubuntu-24.04
+ 
+echo ============================================
+echo   ROCm Auto Setup (WSL2)
+echo ============================================
+echo.
+ 
+REM =========================================================
+REM 1. WSL Check (Ubuntu-24.04 required)
+REM =========================================================
+ 
+wsl -d %DISTRO% -- uname -a >nul 2>&1
+ 
+if errorlevel 1 (
+    echo [ERROR] %DISTRO% not found in installed WSL distributions.
+    echo Installed distros:
+    wsl -l -v
+    pause
+    exit /b 1
+)
+ 
+echo [OK] Ubuntu-24.04 detected.
+echo.
+ 
+REM =========================================================
+REM 2. Windows SDK Check
+REM =========================================================
+ 
+set "SDK_PATH=C:\PROGRA~2\Windows Kits\10\Include\10.0.26100.0"
+ 
+if not exist "%SDK_PATH%" (
+    echo [ERROR] Windows SDK not found.
+    echo Required path:
+    echo %SDK_PATH%
+    pause
+    exit /b 1
+)
+ 
+echo [OK] Windows SDK detected.
+echo.
+
+REM =========================================================
+REM 3. Apply WSL2 VM Optimization (.wslconfig)
+REM =========================================================
+ 
+(
+echo [wsl2]
+echo memory=16GB
+echo processors=8
+echo swap=0
+echo localhostForwarding=true
+) > "%USERPROFILE%\.wslconfig"
+ 
+echo [OK] .wslconfig applied.
+echo.
+ 
+REM =========================================================
+REM 4. Execute Setup in WSL
+REM =========================================================
+ 
+wsl -d %DISTRO% -- bash -c "test -d ~/wsl2-rocm-pytorch-setup || git clone https://github.com/tenroku-jpn/wsl2-rocm-pytorch-setup.git ~/wsl2-rocm-pytorch-setup"
+wsl -d %DISTRO% -- bash -c "cd ~/wsl2-rocm-pytorch-setup && git pull && bash setup.sh"
+
+echo.
+echo ============================================
+echo   Setup Complete!
+echo ============================================
+echo.
+pause
+exit /b 0
