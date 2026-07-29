@@ -1,11 +1,10 @@
 name: Update GPU List
-
 permissions:
   contents: write
 
 on:
   schedule:
-    - cron: "0 18 * * *"
+    - cron: "0 18 * * *"   # 毎日 JST 03:00
   workflow_dispatch:
 
 jobs:
@@ -15,18 +14,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Run GPU list generator
         run: |
-          cd $GITHUB_WORKSPACE
           chmod +x generate_gpu_env.sh
           ./generate_gpu_env.sh
 
       - name: Commit changes
         run: |
-          cd $GITHUB_WORKSPACE
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add config/GPU || true
@@ -34,5 +29,4 @@ jobs:
 
       - name: Push changes
         run: |
-          cd $GITHUB_WORKSPACE
-          git push origin HEAD:main
+          git push
