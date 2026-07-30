@@ -6,7 +6,29 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-ROCm_2.10-EE4C2C.svg?logo=pytorch)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/Code%20License-MIT-green.svg)](LICENSE)
 
-AMD Radeon GPU（ROCm + ROCDXG）向けの WSL2環境を自動で構築します。
+WSL2 上で ROCm と PyTorch (ROCm版) を自動インストールして、AMD GPU を使った機械学習環境を最短で構築するためのセットアップスクリプトです。
+
+AMD の公式手順は WSL2 では煩雑になりがちですが、このスクリプトは
+「WSL2 を起動 → スクリプトを実行 → すぐ使える」  
+という最短ルートに整理しています。
+
+---
+
+🎯 目的
+- ROCm / HIP のインストールを自動化
+- PyTorch ROCm 版のインストールを自動化
+- WSL2 で AMD GPU を使う際の煩雑な手順を一本化
+- デバイス選択や依存関係を自動処理して、誰でも迷わず環境構築できるようにする
+
+---
+
+📦 対応環境
+- Windows 11
+- WSL2
+- Ubuntu 24.04
+- AMD GPU (RDNA2 / RDNA3 以降推奨)
+- ROCm 7.2.1/7.14.0
+- PyTorch ROCm 対応版
 
 ---
 
